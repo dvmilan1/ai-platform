@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f2140;
+  --navy2: #1a3358;
+  --navy3: #254875;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --blue-pale: #dbeafe;
+  --beige: #f5f0e8;
+  --beige2: #ede5d4;
+  --beige3: #e0d5c0;
+  --cream: #faf7f2;
+  --white: #ffffff;
+  --ink: #0f2140;
+  --ink2: #3d5278;
+  --ink3: #7a90b0;
+  --ink4: #b0bfcf;
+  --success: #059669;
+  --success-bg: #d1fae5;
+  --warning: #d97706;
+  --warning-bg: #fef3c7;
+  --danger: #dc2626;
+  --danger-bg: #fee2e2;
+  --purple: #7c3aed;
+  --purple-bg: #ede9fe;
+  --rule: #e5ddd0;
+  --rule2: #d0c8b8;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+  --shadow: 0 1px 3px rgba(15,33,64,0.08), 0 1px 2px rgba(15,33,64,0.05);
+  --shadow-md: 0 4px 16px rgba(15,33,64,0.1), 0 2px 6px rgba(15,33,64,0.06);
+  --shadow-lg: 0 12px 40px rgba(15,33,64,0.14);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── LAYOUT ── */
+.app { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 240px;
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 50;
+}
+
+.sidebar-top {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.logo-mark {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--blue) 0%, #60a5fa 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  letter-spacing: -0.03em;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: white;
+  letter-spacing: -0.01em;
+}
+
+.logo-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  font-family: 'DM Mono', monospace;
+  margin-left: 42px;
+  margin-top: 1px;
+}
+
+.nav { padding: 16px 12px; flex: 1; overflow-y: auto; }
+
+.nav-section {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.25);
+  padding: 12px 8px 6px;
+  font-family: 'DM Mono', monospace;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.55);
+  transition: all 0.15s;
+  margin-bottom: 1px;
+  user-select: none;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
+.nav-item.active { background: rgba(37,99,235,0.25); color: white; }
+.nav-item.active .nav-icon { color: var(--blue-light); }
+
+.nav-icon {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.35);
+}
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 10px;
+  background: var(--blue);
+  color: white;
+  padding: 1px 6px;
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+}
+
+.sidebar-bottom {
+  padding: 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue) 0%, #60a5fa 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  flex-shrink: 0;
+  font-family: 'Syne', sans-serif;
+}
+
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-role { font-size: 10px; color: rgba(255,255,255,0.3); font-family: 'DM Mono', monospace; }
+
+.ai-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  font-family: 'DM Mono', monospace;
+  margin-top: 12px;
+}
+
+.ai-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* ── MAIN ── */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 28px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+.topbar-sub { font-size: 12px; color: var(--ink3); }
+
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.13s;
+  border: 1px solid transparent;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+.btn-primary:hover { background: #1d4ed8; border-color: #1d4ed8; }
+
+.btn-secondary {
+  background: white;
+  color: var(--ink);
+  border-color: var(--rule2);
+}
+.btn-secondary:hover { background: var(--beige); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink2);
+  border-color: transparent;
+}
+.btn-ghost:hover { background: var(--beige); }
+
+.btn-navy {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+}
+.btn-navy:hover { background: var(--navy2); }
+
+.btn-ai {
+  background: var(--purple-bg);
+  color: var(--purple);
+  border-color: #c4b5fd;
+}
+.btn-ai:hover { background: #ddd6fe; }
+
+.btn-danger { background: var(--danger-bg); color: var(--danger); border-color: #fca5a5; }
+.btn-sm { padding: 5px 11px; font-size: 12px; }
+.btn-xs { padding: 3px 8px; font-size: 11px; border-radius: var(--radius-xs); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ── PAGE ── */
+.page { display: none; padding: 28px; animation: fadeUp 0.2s ease; }
+.page.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── METRICS ── */
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+
+.metric {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.metric::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+.metric.blue::before { background: var(--blue); }
+.metric.navy::before { background: var(--navy); }
+.metric.success::before { background: var(--success); }
+.metric.warning::before { background: var(--warning); }
+
+.metric-label { font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.07em; font-family: 'DM Mono', monospace; margin-bottom: 8px; }
+.metric-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 600; color: var(--ink); letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+.metric-sub { font-size: 12px; color: var(--ink3); }
+
+/* ── CARDS ── */
+.card {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.card-body { padding: 20px; }
+
+/* ── PILLS & TAGS ── */
+.pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+}
+
+.pill-blue { background: var(--blue-pale); color: #1e40af; }
+.pill-green { background: var(--success-bg); color: var(--success); }
+.pill-amber { background: var(--warning-bg); color: var(--warning); }
+.pill-red { background: var(--danger-bg); color: var(--danger); }
+.pill-navy { background: #dbeafe; color: var(--navy); }
+.pill-purple { background: var(--purple-bg); color: var(--purple); }
+.pill-beige { background: var(--beige2); color: var(--ink2); }
+
+/* ── KANBAN ── */
+.board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; align-items: start; }
+
+.col {
+  background: var(--beige);
+  border-radius: var(--radius);
+  padding: 12px;
+  border: 1px solid var(--rule);
+}
+
+.col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule2);
+}
+
+.col-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink2);
+  font-family: 'Syne', sans-serif;
+}
+
+.col-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.col-count { font-size: 11px; background: white; border: 1px solid var(--rule); border-radius: 20px; padding: 1px 7px; color: var(--ink3); font-family: 'DM Mono', monospace; }
+
+.c-card {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.13s;
+  box-shadow: var(--shadow);
+}
+
+.c-card:hover {
+  border-color: var(--blue);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.c-top { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+
+.avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-family: 'Syne', sans-serif;
+}
+
+.c-name { font-size: 13px; font-weight: 500; color: var(--ink); line-height: 1.2; font-family: 'Syne', sans-serif; }
+.c-role { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+
+.c-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 9px; }
+.tag { font-size: 10px; padding: 2px 7px; border-radius: 20px; background: var(--beige); color: var(--ink2); border: 1px solid var(--rule); }
+
+.c-footer { display: flex; align-items: center; justify-content: space-between; }
+.score-pill { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+.score-H { background: var(--success-bg); color: var(--success); }
+.score-M { background: var(--warning-bg); color: var(--warning); }
+.score-L { background: var(--danger-bg); color: var(--danger); }
+.c-date { font-size: 10px; color: var(--ink4); font-family: 'DM Mono', monospace; }
+
+/* ── TOOLBAR ── */
+.toolbar { display: flex; gap: 8px; margin-bottom: 18px; align-items: center; flex-wrap: wrap; }
+
+.search-wrap { position: relative; flex: 1; max-width: 300px; }
+.search-wrap input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  background: white;
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.13s;
+}
+.search-wrap input:focus { outline: none; border-color: var(--blue); }
+.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--ink4); width: 14px; height: 14px; pointer-events: none; }
+
+.toolbar select {
+  padding: 8px 10px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  background: white;
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+.toolbar select:focus { outline: none; border-color: var(--blue); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,33,64,0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: white;
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 520px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
+.modal-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 600; color: var(--ink); }
+.modal-close { background: none; border: none; cursor: pointer; color: var(--ink3); font-size: 20px; line-height: 1; padding: 2px; transition: color 0.13s; }
+.modal-close:hover { color: var(--ink); }
+.modal-body { padding: 20px 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--rule); display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ── FORMS ── */
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 12px; color: var(--ink2); margin-bottom: 5px; font-weight: 500; }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  background: white;
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.13s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--blue); }
+.field textarea { min-height: 80px; resize: vertical; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── AI FORM ── */
+.ai-form-wrap { max-width: 640px; }
+
+.toggle-tag {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--rule);
+  background: white;
+  color: var(--ink2);
+  cursor: pointer;
+  transition: all 0.13s;
+  font-family: 'DM Sans', sans-serif;
+}
+.toggle-tag.on { background: var(--blue-pale); border-color: #93c5fd; color: #1d4ed8; }
+
+.result-box {
+  background: var(--beige);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--ink);
+  position: relative;
+  word-break: break-word;
+  border: 1px solid var(--rule);
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px; right: 8px;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--rule2);
+  background: white;
+  color: var(--ink2);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.13s;
+}
+.copy-btn:hover { background: var(--beige); }
+
+/* ── STEPS ── */
+.steps { display: flex; gap: 6px; margin-bottom: 22px; }
+.step { font-size: 12px; padding: 4px 14px; border-radius: 20px; border: 1px solid var(--rule); color: var(--ink3); font-family: 'DM Mono', monospace; }
+.step.active { background: var(--navy); color: white; border-color: var(--navy); }
+.step.done { background: var(--success-bg); border-color: #86efac; color: var(--success); }
+
+/* ── LOADING ── */
+.loading-row { display: flex; align-items: center; gap: 12px; color: var(--ink2); font-size: 14px; padding: 24px 0; }
+.spinner { width: 18px; height: 18px; border: 2px solid var(--rule); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SCORE ROWS ── */
+.score-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.score-row:last-child { border-bottom: none; }
+.weight-pill { font-size: 10px; padding: 2px 9px; border-radius: 20px; flex-shrink: 0; width: 54px; text-align: center; font-family: 'DM Mono', monospace; font-weight: 500; }
+.score-factor { font-size: 13px; font-weight: 500; color: var(--ink); font-family: 'Syne', sans-serif; }
+.score-desc { font-size: 12px; color: var(--ink2); margin-top: 1px; }
+
+/* ── CRITERIA GRID ── */
+.criteria-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.criteria-item { background: var(--beige); border-radius: var(--radius-sm); padding: 10px 12px; border: 1px solid var(--rule); }
+.criteria-type { font-size: 10px; color: var(--ink3); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; }
+.criteria-val { font-size: 12px; color: var(--ink); font-weight: 500; }
+.criteria-item.exclude { background: var(--danger-bg); border-color: #fca5a5; }
+.criteria-item.exclude .criteria-type { color: var(--danger); }
+.criteria-item.exclude .criteria-val { color: var(--danger); }
+
+/* ── CSV DROP ── */
+.drop-zone {
+  border: 2px dashed var(--rule2);
+  border-radius: var(--radius);
+  padding: 48px 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: white;
+}
+.drop-zone:hover, .drop-zone.drag { border-color: var(--blue); background: var(--blue-pale); }
+.drop-zone h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+.drop-zone p { font-size: 13px; color: var(--ink3); }
+
+/* ── TABLE ── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table th { text-align: left; padding: 9px 12px; background: var(--beige); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink3); font-family: 'DM Mono', monospace; border-bottom: 1px solid var(--rule2); }
+.data-table td { padding: 11px 12px; border-bottom: 1px solid var(--rule); color: var(--ink2); }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--cream); }
+
+/* ── HISTORY ── */
+.history-item { display: flex; align-items: baseline; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--rule); font-size: 12px; color: var(--ink2); }
+.history-item:last-child { border-bottom: none; }
+.history-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink3); flex-shrink: 0; }
+
+/* ── DETAIL TABLE ── */
+.detail-table { width: 100%; }
+.detail-table tr td { padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
+.detail-table tr:last-child td { border-bottom: none; }
+.detail-table tr td:first-child { color: var(--ink3); width: 110px; font-size: 12px; }
+
+/* ── DASHBOARD ── */
+.dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+.dash-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+.activity-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.activity-item:last-child { border-bottom: none; }
+.activity-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.activity-text { font-size: 13px; color: var(--ink2); flex: 1; line-height: 1.4; }
+.activity-time { font-size: 11px; color: var(--ink4); font-family: 'DM Mono', monospace; flex-shrink: 0; }
+
+.ai-suggestion {
+  background: linear-gradient(135deg, #ede9fe 0%, #dbeafe 100%);
+  border: 1px solid #c4b5fd;
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.ai-suggestion-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.ai-suggestion-text { font-size: 13px; color: var(--ink); line-height: 1.6; flex: 1; }
+.ai-suggestion-text strong { color: var(--purple); font-weight: 500; }
+
+.funnel-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.funnel-row:last-child { border-bottom: none; }
+.funnel-label { font-size: 12px; color: var(--ink2); width: 90px; flex-shrink: 0; }
+.funnel-bar-wrap { flex: 1; height: 6px; background: var(--beige2); border-radius: 3px; overflow: hidden; }
+.funnel-bar { height: 100%; border-radius: 3px; background: var(--blue); transition: width 0.6s ease; }
+.funnel-num { font-size: 12px; color: var(--ink3); font-family: 'DM Mono', monospace; width: 30px; text-align: right; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--navy);
+  color: white;
+  padding: 11px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.2s;
+  pointer-events: none;
+  box-shadow: var(--shadow-md);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── AI ASSISTANT ── */
+.ai-chat { background: white; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.ai-chat-messages { padding: 16px; min-height: 120px; max-height: 280px; overflow-y: auto; }
+.ai-msg { margin-bottom: 12px; }
+.ai-msg-system { display: flex; gap: 8px; align-items: flex-start; }
+.ai-msg-bubble { background: var(--beige); border-radius: 0 var(--radius-sm) var(--radius-sm) var(--radius-sm); padding: 10px 12px; font-size: 13px; color: var(--ink2); line-height: 1.6; max-width: 85%; }
+.ai-msg-user { display: flex; justify-content: flex-end; }
+.ai-msg-user .ai-msg-bubble { background: var(--navy); color: white; border-radius: var(--radius-sm) 0 var(--radius-sm) var(--radius-sm); }
+.ai-chat-input { border-top: 1px solid var(--rule); padding: 12px 16px; display: flex; gap: 8px; }
+.ai-chat-input input { flex: 1; padding: 8px 12px; border: 1px solid var(--rule); border-radius: var(--radius-sm); font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--ink); }
+.ai-chat-input input:focus { outline: none; border-color: var(--blue); }
+.ai-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, var(--blue) 0%, #60a5fa 100%); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; flex-shrink: 0; margin-top: 2px; font-family: 'Syne', sans-serif; font-weight: 600; }
+
+/* ── SECTION LABEL ── */
+.section-label { font-size: 11px; font-weight: 500; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; margin-top: 18px; font-family: 'DM Mono', monospace; }
+.section-label:first-child { margin-top: 0; }
+
+/* ── EMPTY ── */
+.empty { text-align: center; padding: 32px 20px; color: var(--ink3); font-size: 13px; }
+.empty-icon { font-size: 28px; margin-bottom: 8px; }
+
+/* ── INT ROWS ── */
+.int-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.int-row:last-child { border-bottom: none; }
+.int-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--beige); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.int-info { flex: 1; }
+.int-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 2px; font-family: 'Syne', sans-serif; }
+.int-desc { font-size: 12px; color: var(--ink3); }
+.int-status { font-size: 11px; padding: 3px 9px; border-radius: 20px; font-family: 'DM Mono', monospace; font-weight: 500; }
+.int-connected { background: var(--success-bg); color: var(--success); }
+.int-available { background: var(--beige2); color: var(--ink3); }
+.int-soon { background: var(--warning-bg); color: var(--warning); }
+
+/* ── SETTINGS ── */
+.setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.setting-row:last-child { border-bottom: none; }
+.setting-info { flex: 1; }
+.setting-label { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+.setting-desc { font-size: 12px; color: var(--ink3); }
+.toggle { width: 40px; height: 22px; border-radius: 11px; background: var(--rule); border: none; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }
+.toggle.on { background: var(--blue); }
+.toggle::after { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: white; top: 3px; left: 3px; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.toggle.on::after { transform: translateX(18px); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--rule2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink4); }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="logo">
+        <div class="logo-mark">AI</div>
+        <div class="logo-text">Platform</div>
+      </div>
+      <div class="logo-sub">AI Implementatie</div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-section">Overzicht</div>
+      <div class="nav-item active" onclick="nav('dashboard')" id="nav-dashboard">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        Dashboard
+      </div>
+
+      <div class="nav-section">Recruitment</div>
+      <div class="nav-item" onclick="nav('pipeline')" id="nav-pipeline">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4h14M1 8h10M1 12h6"/></svg>
+        Kandidaten
+        <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="nav('ai')" id="nav-ai">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M5 8h6M8 5v6"/></svg>
+        AI Zoekopdracht
+      </div>
+      <div class="nav-item" onclick="nav('import')" id="nav-import">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m-3-3 3 3 3-3"/><path d="M3 12v1a1 1 0 001 1h8a1 1 0 001-1v-1"/></svg>
+        CSV Import
+      </div>
+
+      <div class="nav-section">Beheer</div>
+      <div class="nav-item" onclick="nav('vacancies')" id="nav-vacancies">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M5 3V2a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M5 7h6M5 10h4"/></svg>
+        Vacatures
+      </div>
+      <div class="nav-item" onclick="nav('clients')" id="nav-clients">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 14v-1a3 3 0 00-3-3H7a3 3 0 00-3 3v1"/><circle cx="8" cy="6" r="3"/></svg>
+        Opdrachtgevers
+      </div>
+
+      <div class="nav-section">Systeem</div>
+      <div class="nav-item" onclick="nav('integrations')" id="nav-integrations">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><path d="M6 4h4M4 6v4M12 6v4M6 12h4"/></svg>
+        Koppelingen
+      </div>
+      <div class="nav-item" onclick="nav('settings')" id="nav-settings">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg>
+        Instellingen
+      </div>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="user-row">
+        <div class="user-avatar">JD</div>
+        <div class="user-info">
+          <div class="user-name">Jouw naam</div>
+          <div class="user-role">Admin</div>
+        </div>
+      </div>
+      <div class="ai-status">
+        <div class="ai-dot"></div>
+        Claude AI actief
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar" id="topbar">
+      <div class="topbar-left">
+        <div>
+          <div class="topbar-title" id="topbar-title">Dashboard</div>
+          <div class="topbar-sub" id="topbar-sub">Overzicht van vandaag</div>
+        </div>
+      </div>
+      <div class="topbar-right" id="topbar-actions">
+        <button class="btn btn-secondary btn-sm" onclick="nav('import')">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m-3-3 3 3 3-3"/><path d="M3 12v1a1 1 0 001 1h8a1 1 0 001-1v-1"/></svg>
+          Import
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Kandidaat</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="metrics">
+        <div class="metric blue">
+          <div class="metric-label">Totaal kandidaten</div>
+          <div class="metric-value" id="m-total">5</div>
+          <div class="metric-sub">In alle fases</div>
+        </div>
+        <div class="metric navy">
+          <div class="metric-label">Benaderd</div>
+          <div class="metric-value" id="m-benaderd">4</div>
+          <div class="metric-sub">Deze maand</div>
+        </div>
+        <div class="metric success">
+          <div class="metric-label">In gesprek</div>
+          <div class="metric-value" id="m-gesprek">2</div>
+          <div class="metric-sub">Screening + interview</div>
+        </div>
+        <div class="metric warning">
+          <div class="metric-label">Hoge match</div>
+          <div class="metric-value" id="m-hoog">3</div>
+          <div class="metric-sub">Score A kandidaten</div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">AI Suggesties</div>
+            <span class="pill pill-purple">3 acties</span>
+          </div>
+          <div class="card-body">
+            <div class="ai-suggestion">
+              <div class="ai-suggestion-icon">💬</div>
+              <div class="ai-suggestion-text"><strong>Thomas Smit</strong> heeft 5 dagen geen reactie gegeven. Wil je een follow-up sturen?</div>
+              <button class="btn btn-sm btn-ai" style="flex-shrink:0;" onclick="toast('Follow-up gegenereerd')">Stuur</button>
+            </div>
+            <div class="ai-suggestion">
+              <div class="ai-suggestion-icon">🎯</div>
+              <div class="ai-suggestion-text"><strong>Vacature Java Developer</strong> staat al 3 weken open. Er zijn 2 kandidaten klaar voor interview.</div>
+              <button class="btn btn-sm btn-secondary" style="flex-shrink:0;" onclick="nav('pipeline')">Bekijk</button>
+            </div>
+            <div class="ai-suggestion">
+              <div class="ai-suggestion-icon">⭐</div>
+              <div class="ai-suggestion-text"><strong>Lena van der Berg</strong> scoort 94/100 voor de open Java-positie. Nog niet benaderd.</div>
+              <button class="btn btn-sm btn-primary" style="flex-shrink:0;" onclick="toast('Bericht gegenereerd')">Benader</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Pijplijn funnel</div>
+          </div>
+          <div class="card-body">
+            <div class="funnel-row"><span class="funnel-label">Nieuw</span><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%"></div></div><span class="funnel-num">2</span></div>
+            <div class="funnel-row"><span class="funnel-label">Benaderd</span><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:50%"></div></div><span class="funnel-num">1</span></div>
+            <div class="funnel-row"><span class="funnel-label">Screening</span><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:50%"></div></div><span class="funnel-num">1</span></div>
+            <div class="funnel-row"><span class="funnel-label">Interview</span><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:50%"></div></div><span class="funnel-num">1</span></div>
+            <div class="funnel-row"><span class="funnel-label">Aanbod</span><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:0%"></div></div><span class="funnel-num">0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-grid-3">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Recente activiteit</div></div>
+          <div class="card-body" style="padding-top:12px;padding-bottom:12px;">
+            <div class="activity-item"><div class="activity-dot" style="background:#3b82f6"></div><div class="activity-text">Lena van der Berg toegevoegd aan pijplijn</div><div class="activity-time">2u</div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:#059669"></div><div class="activity-text">Daan Koopman verplaatst naar Interview</div><div class="activity-time">5u</div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:#d97706"></div><div class="activity-text">AI bericht verstuurd naar Thomas Smit</div><div class="activity-time">1d</div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:#7c3aed"></div><div class="activity-text">Zoekopdracht gegenereerd: Product Manager</div><div class="activity-time">2d</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Actieve vacatures</div></div>
+          <div class="card-body" style="padding-top:12px;padding-bottom:12px;">
+            <div class="activity-item"><div class="activity-dot" style="background:#2563eb"></div><div class="activity-text">Senior Java Developer — 4 kandidaten</div><div class="activity-time"><span class="pill pill-green">Actief</span></div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:#2563eb"></div><div class="activity-text">Product Manager — 1 kandidaat</div><div class="activity-time"><span class="pill pill-green">Actief</span></div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:#94a3b8"></div><div class="activity-text">UX Designer — 0 kandidaten</div><div class="activity-time"><span class="pill pill-amber">Nieuw</span></div></div>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column:span 1;">
+          <div class="card-header"><div class="card-title">AI Assistent</div><span class="pill pill-purple">Beta</span></div>
+          <div class="ai-chat">
+            <div class="ai-chat-messages" id="chat-messages">
+              <div class="ai-msg">
+                <div class="ai-msg-system">
+                  <div class="ai-avatar">AI</div>
+                  <div class="ai-msg-bubble">Hallo! Ik heb je pijplijn geanalyseerd. Je hebt momenteel 5 kandidaten. Wat wil je weten?</div>
+                </div>
+              </div>
+            </div>
+            <div class="ai-chat-input">
+              <input type="text" id="chat-input" placeholder="Stel een vraag over je data..." onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="btn btn-primary btn-sm" onclick="sendChat()">Stuur</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE PAGE -->
+    <div class="page" id="page-pipeline">
+      <div class="metrics" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px;">
+        <div class="metric blue"><div class="metric-label">Totaal</div><div class="metric-value" id="pm-total">5</div></div>
+        <div class="metric navy"><div class="metric-label">Benaderd</div><div class="metric-value" id="pm-benaderd">4</div></div>
+        <div class="metric success"><div class="metric-label">In gesprek</div><div class="metric-value" id="pm-gesprek">2</div></div>
+        <div class="metric warning"><div class="metric-label">Hoge match</div><div class="metric-value" id="pm-hoog">3</div></div>
+      </div>
+      <div class="toolbar">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4"/><path d="M10 10l3 3"/></svg>
+          <input type="text" id="p-search" placeholder="Zoek kandidaten..." oninput="drawBoard()">
+        </div>
+        <select id="p-score" onchange="drawBoard()">
+          <option value="">Alle scores</option>
+          <option>Hoog</option><option>Middel</option><option>Laag</option>
+        </select>
+        <select id="p-func" onchange="drawBoard()">
+          <option value="">Alle functies</option>
+        </select>
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <button class="btn btn-secondary btn-sm" onclick="nav('import')">CSV import</button>
+          <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Kandidaat</button>
+        </div>
+      </div>
+      <div class="board" id="board"></div>
+    </div>
+
+    <!-- AI PAGE -->
+    <div class="page" id="page-ai">
+      <div class="steps" id="ai-steps">
+        <div class="step active" id="s1">1 — Functieprofiel</div>
+        <div class="step" id="s2">2 — Analyse</div>
+        <div class="step" id="s3">3 — Resultaten</div>
+      </div>
+      <div class="ai-form-wrap">
+        <div class="card" id="ai-form-card">
+          <div class="card-header"><div class="card-title">Functieprofiel invoeren</div></div>
+          <div class="card-body">
+            <div class="field-row">
+              <div class="field"><label>Functietitel *</label><input id="ai-title" placeholder="bijv. Senior Java Developer"></div>
+              <div class="field"><label>Locatie</label><input id="ai-loc" placeholder="bijv. Amsterdam"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Niveau</label>
+                <select id="ai-level">
+                  <option value="">Selecteer...</option>
+                  <option>Junior (0–2 jaar)</option>
+                  <option>Medior (2–5 jaar)</option>
+                  <option>Senior (5–10 jaar)</option>
+                  <option>Lead / Principal (10+ jaar)</option>
+                </select>
+              </div>
+              <div class="field"><label>Sector</label><input id="ai-sector" placeholder="bijv. Fintech, Zorg"></div>
+            </div>
+            <div class="field"><label>Vaardigheden en eisen *</label><textarea id="ai-skills" placeholder="bijv. Java, Spring Boot, microservices, Agile, 5 jaar ervaring"></textarea></div>
+            <div class="field">
+              <label>Talen</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;" id="lang-tags">
+                <span class="toggle-tag on" onclick="this.classList.toggle('on')">Nederlands</span>
+                <span class="toggle-tag on" onclick="this.classList.toggle('on')">Engels</span>
+                <span class="toggle-tag" onclick="this.classList.toggle('on')">Duits</span>
+                <span class="toggle-tag" onclick="this.classList.toggle('on')">Frans</span>
+              </div>
+            </div>
+            <div class="field"><label>Extra wensen</label><textarea id="ai-extra" placeholder="bijv. freelance of vast, remote mogelijk, beschikbaar binnen 1 maand" style="min-height:60px;"></textarea></div>
+            <button class="btn btn-primary" onclick="runAI()" id="ai-run-btn" style="width:100%;justify-content:center;margin-top:4px;">
+              Genereer zoekcriteria & Boolean strings
+            </button>
+          </div>
+        </div>
+        <div id="ai-output"></div>
+      </div>
+    </div>
+
+    <!-- IMPORT PAGE -->
+    <div class="page" id="page-import">
+      <div class="card" style="margin-bottom:16px;max-width:700px;">
+        <div class="card-header"><div class="card-title">LinkedIn Recruiter export importeren</div></div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--ink2);line-height:1.7;">
+            <strong>Stap 1</strong> — Gebruik de AI Zoekopdracht om een Boolean string te genereren<br>
+            <strong>Stap 2</strong> — Plak de string in LinkedIn Recruiter en voer de zoekopdracht uit<br>
+            <strong>Stap 3</strong> — Selecteer kandidaten → Export → Download CSV<br>
+            <strong>Stap 4</strong> — Upload het CSV bestand hieronder
+          </p>
+        </div>
+      </div>
+      <div style="max-width:700px;">
+        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('csv-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+          <div style="font-size:32px;margin-bottom:12px;">📥</div>
+          <h3>Sleep CSV hier of klik om te uploaden</h3>
+          <p style="margin-top:6px;">Ondersteunt LinkedIn Recruiter exports (.csv)</p>
+          <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleFile(this.files[0])">
+        </div>
+        <div id="csv-preview"></div>
+      </div>
+    </div>
+
+    <!-- VACANCIES PAGE -->
+    <div class="page" id="page-vacancies">
+      <div class="toolbar" style="margin-bottom:20px;">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4"/><path d="M10 10l3 3"/></svg>
+          <input type="text" placeholder="Zoek vacatures...">
+        </div>
+        <div style="margin-left:auto;">
+          <button class="btn btn-primary btn-sm" onclick="toast('Vacature toevoegen — komt binnenkort')">+ Vacature</button>
+        </div>
+      </div>
+      <div class="card">
+        <table class="data-table">
+          <thead><tr><th>Vacature</th><th>Opdrachtgever</th><th>Kandidaten</th><th>Status</th><th>Datum</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="font-family:'Syne',sans-serif;color:var(--ink);">Senior Java Developer</strong></td>
+              <td>TechCorp B.V.</td>
+              <td><span style="font-family:'DM Mono',monospace;font-size:12px;">4 kandidaten</span></td>
+              <td><span class="pill pill-green">Actief</span></td>
+              <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--ink3);">20 apr</span></td>
+              <td><button class="btn btn-ghost btn-xs" onclick="toast('Vacaturedetail — komt binnenkort')">Bekijk</button></td>
+            </tr>
+            <tr>
+              <td><strong style="font-family:'Syne',sans-serif;color:var(--ink);">Product Manager</strong></td>
+              <td>StartupXL</td>
+              <td><span style="font-family:'DM Mono',monospace;font-size:12px;">1 kandidaat</span></td>
+              <td><span class="pill pill-green">Actief</span></td>
+              <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--ink3);">22 apr</span></td>
+              <td><button class="btn btn-ghost btn-xs" onclick="toast('Vacaturedetail — komt binnenkort')">Bekijk</button></td>
+            </tr>
+            <tr>
+              <td><strong style="font-family:'Syne',sans-serif;color:var(--ink);">UX Designer</strong></td>
+              <td>DesignHub</td>
+              <td><span style="font-family:'DM Mono',monospace;font-size:12px;">0 kandidaten</span></td>
+              <td><span class="pill pill-amber">Nieuw</span></td>
+              <td><span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--ink3);">24 apr</span></td>
+              <td><button class="btn btn-ghost btn-xs" onclick="nav('ai')">AI zoeken</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CLIENTS PAGE -->
+    <div class="page" id="page-clients">
+      <div class="toolbar" style="margin-bottom:20px;">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4"/><path d="M10 10l3 3"/></svg>
+          <input type="text" placeholder="Zoek opdrachtgevers...">
+        </div>
+        <div style="margin-left:auto;">
+          <button class="btn btn-primary btn-sm" onclick="toast('Opdrachtgever toevoegen — komt binnenkort')">+ Opdrachtgever</button>
+        </div>
+      </div>
+      <div class="card">
+        <table class="data-table">
+          <thead><tr><th>Bedrijf</th><th>Contactpersoon</th><th>Actieve vacatures</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="font-family:'Syne',sans-serif;color:var(--ink);">TechCorp B.V.</strong><br><span style="font-size:11px;color:var(--ink3);">Amsterdam</span></td>
+              <td>Mark de Boer<br><span style="font-size:11px;color:var(--ink3);">HR Manager</span></td>
+              <td><span class="pill pill-blue">2 vacatures</span></td>
+              <td><span class="pill pill-green">Actief</span></td>
+              <td><button class="btn btn-ghost btn-xs" onclick="toast('CRM module — komt binnenkort')">Bekijk</button></td>
+            </tr>
+            <tr>
+              <td><strong style="font-family:'Syne',sans-serif;color:var(--ink);">StartupXL</strong><br><span style="font-size:11px;color:var(--ink3);">Utrecht</span></td>
+              <td>Lisa van Dam<br><span style="font-size:11px;color:var(--ink3);">CEO</span></td>
+              <td><span class="pill pill-blue">1 vacature</span></td>
+              <td><span class="pill pill-green">Actief</span></td>
+              <td><button class="btn btn-ghost btn-xs" onclick="toast('CRM module — komt binnenkort')">Bekijk</button></td>
+            </tr>
+            <tr>
+              <td><strong style="font-family:'Syne',sans-serif;color:var(--ink);">DesignHub</strong><br><span style="font-size:11px;color:var(--ink3);">Rotterdam</span></td>
+              <td>Sander Kool<br><span style="font-size:11px;color:var(--ink3);">Design Director</span></td>
+              <td><span class="pill pill-amber">1 vacature</span></td>
+              <td><span class="pill pill-amber">Nieuw</span></td>
+              <td><button class="btn btn-ghost btn-xs" onclick="toast('CRM module — komt binnenkort')">Bekijk</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- INTEGRATIONS PAGE -->
+    <div class="page" id="page-integrations">
+      <div class="card" style="max-width:680px;">
+        <div class="card-header"><div class="card-title">Koppelingen</div></div>
+        <div class="card-body">
+          <div class="int-row"><div class="int-icon">💼</div><div class="int-info"><div class="int-name">LinkedIn Recruiter</div><div class="int-desc">Boolean strings + CSV import van zoekresultaten</div></div><span class="int-status int-connected">Verbonden</span></div>
+          <div class="int-row"><div class="int-icon">🤖</div><div class="int-info"><div class="int-name">Claude AI</div><div class="int-desc">AI zoekopdrachten, berichtgeneratie en assistent</div></div><span class="int-status int-connected">Actief</span></div>
+          <div class="int-row"><div class="int-icon">📋</div><div class="int-info"><div class="int-name">Indeed</div><div class="int-desc">Vacatures posten en reacties ontvangen</div></div><span class="int-status int-soon">Binnenkort</span></div>
+          <div class="int-row"><div class="int-icon">💬</div><div class="int-info"><div class="int-name">WhatsApp Business</div><div class="int-desc">Kandidaten direct berichten vanuit het systeem</div></div><span class="int-status int-soon">Binnenkort</span></div>
+          <div class="int-row"><div class="int-icon">📧</div><div class="int-info"><div class="int-name">E-mail (Gmail / Outlook)</div><div class="int-desc">Alle communicatie gelogd in het systeem</div></div><span class="int-status int-available">Beschikbaar</span></div>
+          <div class="int-row"><div class="int-icon">📅</div><div class="int-info"><div class="int-name">Google Calendar</div><div class="int-desc">Gesprekken plannen en synchroniseren</div></div><span class="int-status int-available">Beschikbaar</span></div>
+          <div class="int-row"><div class="int-icon">🏢</div><div class="int-info"><div class="int-name">Nationalevacaturebank</div><div class="int-desc">Multiposting naar grote Nederlandse jobboard</div></div><span class="int-status int-soon">Binnenkort</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div class="page" id="page-settings">
+      <div class="card" style="max-width:600px;">
+        <div class="card-header"><div class="card-title">Platforminstellingen</div></div>
+        <div class="card-body">
+          <div class="section-label">Modules</div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-label">Recruitment module</div><div class="setting-desc">Kandidaten pijplijn, AI zoekopdracht, CSV import</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-label">Vacaturebeheer</div><div class="setting-desc">Vacatures aanmaken, koppelen aan kandidaten</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-label">Opdrachtgeversbeheer (CRM)</div><div class="setting-desc">Relatiebeheer met opdrachtgevers en contactpersonen</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-label">AI Assistent</div><div class="setting-desc">Vragen stellen over je eigen data</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-label">Rapportages</div><div class="setting-desc">Conversieratio, doorlooptijd, kostenoverzicht</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+
+          <div class="section-label">Notificaties</div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-label">AI suggesties</div><div class="setting-desc">Proactieve meldingen van de AI assistent</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-label">Wekelijkse samenvatting</div><div class="setting-desc">Automatisch gegenereerde weekrapportage</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="setting-row"><div class="setting-info"><div class="setting-label">Follow-up herinneringen</div><div class="setting-desc">Melding als kandidaat te lang geen reactie geeft</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL CONTAINER -->
+<div id="modal-container"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ──
+const API_KEY = 'JOUW-API-KEY-HIER'; // <-- Vul hier je API key in
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const COLS = [
+  { id:'nieuw',     label:'Nieuw',     color:'#2563eb' },
+  { id:'benaderd',  label:'Benaderd',  color:'#059669' },
+  { id:'screening', label:'Screening', color:'#d97706' },
+  { id:'interview', label:'Interview', color:'#7c3aed' },
+  { id:'aanbod',    label:'Aanbod',    color:'#dc2626' }
+];
+
+const AV = [
+  {bg:'#dbeafe',c:'#1e40af'},{bg:'#dcfce7',c:'#15803d'},
+  {bg:'#fef9c3',c:'#92400e'},{bg:'#ede9fe',c:'#4c1d95'},
+  {bg:'#fee2e2',c:'#991b1b'},{bg:'#fce7f3',c:'#9d174d'}
+];
+
+let candidates = [
+  {id:1,naam:'Lena van der Berg',functie:'Senior Java Developer',skills:['Java','Spring Boot','AWS'],score:'Hoog',status:'nieuw',locatie:'Amsterdam',datum:'24 apr',notitie:'Sterk profiel, 8 jaar ervaring.',geschiedenis:['24 apr — Toegevoegd aan pijplijn'],linkedin:''},
+  {id:2,naam:'Thomas Smit',functie:'Senior Java Developer',skills:['Java','Microservices'],score:'Middel',status:'benaderd',locatie:'Utrecht',datum:'23 apr',notitie:'InMail verstuurd.',geschiedenis:['23 apr — Toegevoegd','23 apr — Eerste bericht verstuurd'],linkedin:''},
+  {id:3,naam:'Anouk Jansen',functie:'Product Manager',skills:['Agile','Roadmap','B2B'],score:'Hoog',status:'screening',locatie:'Rotterdam',datum:'22 apr',notitie:'Telefonische screening ingepland.',geschiedenis:['22 apr — Toegevoegd','22 apr — Bericht verstuurd','24 apr — Screening ingepland'],linkedin:''},
+  {id:4,naam:'Daan Koopman',functie:'Senior Java Developer',skills:['Java','Kafka','Docker'],score:'Hoog',status:'interview',locatie:'Amsterdam',datum:'20 apr',notitie:'Eerste gesprek positief.',geschiedenis:['20 apr — Toegevoegd','21 apr — Bericht verstuurd','22 apr — Screening','24 apr — Interview gepland'],linkedin:''},
+  {id:5,naam:'Sara Bakker',functie:'UX Designer',skills:['Figma','Research'],score:'Middel',status:'nieuw',locatie:'Den Haag',datum:'24 apr',notitie:'',geschiedenis:['24 apr — Toegevoegd'],linkedin:''}
+];
+let nextId = 6;
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+const ini = n => n.split(' ').filter(w=>w.length>1).slice(0,2).map(w=>w[0].toUpperCase()).join('');
+const av = id => AV[id % AV.length];
+const tod = () => new Date().toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
+const sc = s => s==='Hoog'?'score-H':s==='Middel'?'score-M':'score-L';
+const wc = s => s==='Hoog'?'pill-green':s==='Middel'?'pill-amber':'pill-red';
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function closeModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('modal-container').innerHTML = '';
+}
+
+function copy(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) { const old = btn.textContent; btn.textContent = 'Gekopieerd!'; setTimeout(() => btn.textContent = old, 1500); }
+    toast('Gekopieerd naar klembord');
+  });
+}
+
+function updateMetrics() {
+  const t = candidates.length;
+  const b = candidates.filter(c => c.status !== 'nieuw').length;
+  const g = candidates.filter(c => ['interview','aanbod'].includes(c.status)).length;
+  const h = candidates.filter(c => c.score === 'Hoog').length;
+  ['m-total','pm-total'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=t; });
+  ['m-benaderd','pm-benaderd'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=b; });
+  ['m-gesprek','pm-gesprek'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=g; });
+  ['m-hoog','pm-hoog'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=h; });
+  // update nav badge
+  document.querySelector('#nav-pipeline .nav-badge').textContent = t;
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+const PAGE_INFO = {
+  dashboard:    { title: 'Dashboard', sub: 'Overzicht van vandaag', actions: true },
+  pipeline:     { title: 'Kandidaten', sub: 'Alle kandidaten in de pijplijn', actions: true },
+  ai:           { title: 'AI Zoekopdracht', sub: 'Genereer zoekcriteria en Boolean strings', actions: false },
+  import:       { title: 'CSV Import', sub: 'Kandidaten importeren vanuit LinkedIn', actions: false },
+  vacancies:    { title: 'Vacatures', sub: 'Alle actieve en gesloten vacatures', actions: false },
+  clients:      { title: 'Opdrachtgevers', sub: 'CRM — relatiebeheer', actions: false },
+  integrations: { title: 'Koppelingen', sub: 'Externe systemen en integraties', actions: false },
+  settings:     { title: 'Instellingen', sub: 'Platform configuratie', actions: false }
+};
+
+function nav(p) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + p);
+  if (navEl) navEl.classList.add('active');
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  const pageEl = document.getElementById('page-' + p);
+  if (pageEl) pageEl.classList.add('active');
+  const info = PAGE_INFO[p] || { title: p, sub: '', actions: false };
+  document.getElementById('topbar-title').textContent = info.title;
+  document.getElementById('topbar-sub').textContent = info.sub;
+  document.getElementById('topbar-actions').style.display = info.actions ? 'flex' : 'none';
+  if (p === 'pipeline') { updateFuncFilter(); drawBoard(); }
+  if (p === 'dashboard') updateMetrics();
+}
+
+// ── PIPELINE ──────────────────────────────────────────────────────────────────
+function updateFuncFilter() {
+  const sel = document.getElementById('p-func');
+  if (!sel) return;
+  const cur = sel.value;
+  const funcs = [...new Set(candidates.map(c => c.functie))];
+  sel.innerHTML = '<option value="">Alle functies</option>' + funcs.map(f => `<option ${f===cur?'selected':''}>${f}</option>`).join('');
+}
+
+function drawBoard() {
+  const q = (document.getElementById('p-search')?.value || '').toLowerCase();
+  const sf = document.getElementById('p-score')?.value || '';
+  const ff = document.getElementById('p-func')?.value || '';
+  const filtered = candidates.filter(c => {
+    const mq = !q || [c.naam, c.functie, ...c.skills].some(x => x.toLowerCase().includes(q));
+    const ms = !sf || c.score === sf;
+    const mf = !ff || c.functie === ff;
+    return mq && ms && mf;
+  });
+  document.getElementById('board').innerHTML = COLS.map(col => {
+    const cards = filtered.filter(c => c.status === col.id);
+    return `<div class="col">
+      <div class="col-header">
+        <div class="col-label"><div class="col-dot" style="background:${col.color}"></div>${col.label}</div>
+        <div class="col-count">${cards.length}</div>
+      </div>
+      ${cards.length === 0 ? '<div class="empty"><div class="empty-icon">·</div>Leeg</div>' : ''}
+      ${cards.map(c => {
+        const a = av(c.id);
+        return `<div class="c-card" onclick="openDetail(${c.id})">
+          <div class="c-top">
+            <div class="avatar" style="background:${a.bg};color:${a.c}">${ini(c.naam)}</div>
+            <div><div class="c-name">${c.naam}</div><div class="c-role">${c.functie} · ${c.locatie}</div></div>
+          </div>
+          <div class="c-tags">${c.skills.slice(0,3).map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+          <div class="c-footer">
+            <span class="score-pill ${sc(c.score)}">${c.score}</span>
+            <span class="c-date">${c.datum}</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+function openDetail(id) {
+  const c = candidates.find(x => x.id === id);
+  if (!c) return;
+  const ci = COLS.findIndex(x => x.id === c.status);
+  const prev = COLS[ci-1]; const next = COLS[ci+1];
+  const a = av(c.id);
+  document.getElementById('modal-container').innerHTML = `
+    <div class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal">
+        <div class="modal-header">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="avatar" style="width:40px;height:40px;font-size:13px;background:${a.bg};color:${a.c}">${ini(c.naam)}</div>
+            <div><div class="modal-title">${c.naam}</div><div style="font-size:12px;color:var(--ink3);">${c.functie} · ${c.locatie}</div></div>
+          </div>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <table class="detail-table">
+            <tr><td>Score</td><td><span class="score-pill ${sc(c.score)}">${c.score}</span></td></tr>
+            <tr><td>Fase</td><td>${COLS.find(x=>x.id===c.status).label}</td></tr>
+            <tr><td>Skills</td><td>${c.skills.join(', ')}</td></tr>
+            <tr><td>Toegevoegd</td><td>${c.datum}</td></tr>
+            ${c.linkedin ? `<tr><td>LinkedIn</td><td><a href="${c.linkedin}" target="_blank" style="color:var(--blue);font-size:12px;">Profiel bekijken →</a></td></tr>` : ''}
+          </table>
+          ${c.notitie ? `<div style="margin-top:14px;padding:12px;background:var(--beige);border-radius:var(--radius-sm);font-size:13px;color:var(--ink2);border:1px solid var(--rule);">${c.notitie}</div>` : ''}
+          <div class="section-label">Fase verplaatsen</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            ${prev ? `<button class="btn btn-secondary btn-sm" onclick="move(${c.id},'${prev.id}')">← ${prev.label}</button>` : ''}
+            ${next ? `<button class="btn btn-primary btn-sm" onclick="move(${c.id},'${next.id}')">→ ${next.label}</button>` : ''}
+          </div>
+          <div class="section-label">Acties</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-ai btn-sm" onclick="toast('AI bericht gegenereerd voor ${c.naam}');closeModal()">AI bericht</button>
+            <button class="btn btn-secondary btn-sm" onclick="editCandidate(${c.id})">Bewerken</button>
+            <button class="btn btn-danger btn-sm" onclick="delCandidate(${c.id})">Verwijderen</button>
+          </div>
+          <div class="section-label">Geschiedenis</div>
+          <div>${c.geschiedenis.map(h => {
+            const p = h.split(' — ');
+            return `<div class="history-item"><span class="history-date">${p[0]}</span><span>${p.slice(1).join(' — ')}</span></div>`;
+          }).join('')}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function move(id, status) {
+  const c = candidates.find(x => x.id === id);
+  const label = COLS.find(x => x.id === status).label;
+  c.status = status;
+  c.geschiedenis.push(`${tod()} — Verplaatst naar ${label}`);
+  closeModal(); updateMetrics(); drawBoard(); toast(`${c.naam} → ${label}`);
+}
+
+function delCandidate(id) {
+  if (!confirm('Kandidaat verwijderen?')) return;
+  candidates = candidates.filter(x => x.id !== id);
+  closeModal(); updateMetrics(); updateFuncFilter(); drawBoard(); toast('Kandidaat verwijderd');
+}
+
+function editCandidate(id) {
+  const c = candidates.find(x => x.id === id);
+  closeModal();
+  document.getElementById('modal-container').innerHTML = `
+    <div class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal">
+        <div class="modal-header"><div class="modal-title">Bewerken — ${c.naam}</div><button class="modal-close" onclick="closeModal()">×</button></div>
+        <div class="modal-body">
+          <div class="field-row">
+            <div class="field"><label>Naam</label><input id="e-naam" value="${c.naam}"></div>
+            <div class="field"><label>Functie</label><input id="e-func" value="${c.functie}"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Locatie</label><input id="e-loc" value="${c.locatie}"></div>
+            <div class="field"><label>Score</label><select id="e-score"><option ${c.score==='Hoog'?'selected':''}>Hoog</option><option ${c.score==='Middel'?'selected':''}>Middel</option><option ${c.score==='Laag'?'selected':''}>Laag</option></select></div>
+          </div>
+          <div class="field"><label>Skills (komma gescheiden)</label><input id="e-skills" value="${c.skills.join(', ')}"></div>
+          <div class="field"><label>LinkedIn URL</label><input id="e-li" value="${c.linkedin||''}" placeholder="https://linkedin.com/in/..."></div>
+          <div class="field"><label>Notitie</label><textarea id="e-note">${c.notitie}</textarea></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="closeModal()">Annuleer</button>
+          <button class="btn btn-primary" onclick="saveEdit(${id})">Opslaan</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function saveEdit(id) {
+  const c = candidates.find(x => x.id === id);
+  c.naam = document.getElementById('e-naam').value;
+  c.functie = document.getElementById('e-func').value;
+  c.locatie = document.getElementById('e-loc').value;
+  c.score = document.getElementById('e-score').value;
+  c.skills = document.getElementById('e-skills').value.split(',').map(s => s.trim()).filter(Boolean);
+  c.linkedin = document.getElementById('e-li').value;
+  c.notitie = document.getElementById('e-note').value;
+  c.geschiedenis.push(`${tod()} — Profiel bijgewerkt`);
+  closeModal(); updateMetrics(); updateFuncFilter(); drawBoard(); toast('Opgeslagen');
+}
+
+function openAddModal() {
+  document.getElementById('modal-container').innerHTML = `
+    <div class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal">
+        <div class="modal-header"><div class="modal-title">Kandidaat toevoegen</div><button class="modal-close" onclick="closeModal()">×</button></div>
+        <div class="modal-body">
+          <div class="field-row">
+            <div class="field"><label>Naam *</label><input id="n-naam" placeholder="Voor- en achternaam"></div>
+            <div class="field"><label>Functietitel *</label><input id="n-func" placeholder="bijv. Senior Developer"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Locatie</label><input id="n-loc" placeholder="bijv. Amsterdam"></div>
+            <div class="field"><label>Score</label><select id="n-score"><option>Hoog</option><option>Middel</option><option>Laag</option></select></div>
+          </div>
+          <div class="field"><label>Skills (komma gescheiden)</label><input id="n-skills" placeholder="bijv. Java, Python, AWS"></div>
+          <div class="field"><label>LinkedIn URL</label><input id="n-li" placeholder="https://linkedin.com/in/..."></div>
+          <div class="field"><label>Notitie</label><textarea id="n-note" placeholder="Eerste indruk, bron, etc."></textarea></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="closeModal()">Annuleer</button>
+          <button class="btn btn-primary" onclick="saveNew()">Toevoegen aan pijplijn</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function saveNew() {
+  const naam = document.getElementById('n-naam').value.trim();
+  const functie = document.getElementById('n-func').value.trim();
+  if (!naam || !functie) { toast('Naam en functie zijn verplicht'); return; }
+  candidates.push({
+    id: nextId++, naam, functie,
+    locatie: document.getElementById('n-loc').value.trim() || '—',
+    skills: document.getElementById('n-skills').value.split(',').map(s => s.trim()).filter(Boolean),
+    score: document.getElementById('n-score').value,
+    status: 'nieuw', datum: tod(),
+    notitie: document.getElementById('n-note').value.trim(),
+    linkedin: document.getElementById('n-li').value.trim(),
+    geschiedenis: [`${tod()} — Toegevoegd aan pijplijn`]
+  });
+  closeModal(); updateMetrics(); updateFuncFilter(); drawBoard(); toast('Kandidaat toegevoegd');
+}
+
+// ── AI ────────────────────────────────────────────────────────────────────────
+async function runAI() {
+  const title = document.getElementById('ai-title').value.trim();
+  const skills = document.getElementById('ai-skills').value.trim();
+  if (!title || !skills) { toast('Vul minimaal functietitel en vaardigheden in'); return; }
+  const loc = document.getElementById('ai-loc').value.trim();
+  const level = document.getElementById('ai-level').value;
+  const sector = document.getElementById('ai-sector').value.trim();
+  const langs = [...document.querySelectorAll('#lang-tags .toggle-tag.on')].map(t => t.textContent).join(', ');
+  const extra = document.getElementById('ai-extra').value.trim();
+  const btn = document.getElementById('ai-run-btn');
+  btn.disabled = true;
+  ['s1','s2','s3'].forEach((id,i) => { document.getElementById(id).className = 'step' + (i===0?' done':i===1?' active':''); });
+  document.getElementById('ai-output').innerHTML = `<div class="loading-row" style="margin-top:16px;"><div class="spinner"></div><span>AI analyseert het functieprofiel...</span></div>`;
+
+  const prompt = `Je bent een expert recruiter-AI. Analyseer het functieprofiel en geef ALLEEN pure JSON terug, geen uitleg, geen markdown.
+
+Functieprofiel:
+- Titel: ${title}
+- Locatie: ${loc||'niet opgegeven'}
+- Niveau: ${level||'niet opgegeven'}
+- Sector: ${sector||'niet opgegeven'}
+- Vaardigheden: ${skills}
+- Talen: ${langs}
+- Extra: ${extra||'geen'}
+
+JSON formaat (exact):
+{"samenvatting":"1-2 zinnen ideale kandidaat","boolean_linkedin":"volledige LinkedIn Boolean","boolean_google":"Google X-Ray site:linkedin.com/in zoekopdracht","zoekcriteria":{"must_have":["item1","item2","item3"],"nice_to_have":["item1","item2"],"uitsluitcriteria":["item1","item2"]},"scoremodel":[{"factor":"naam","gewicht":"Hoog","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Hoog","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Middel","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Laag","omschrijving":"uitleg"}],"eerste_bericht":"LinkedIn InMail max 120 woorden, jij-vorm, [NAAM] placeholder, professioneel maar warm"}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-ipc': 'true' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const raw = data.content.map(b => b.text || '').join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const r = JSON.parse(clean);
+    ['s1','s2','s3'].forEach((id,i) => { document.getElementById(id).className = 'step' + (i < 2 ? ' done' : ' active'); });
+    renderAIResult(r);
+  } catch(e) {
+    document.getElementById('ai-output').innerHTML = `<p style="color:var(--danger);font-size:13px;margin-top:16px;">Er ging iets mis. Controleer je verbinding en probeer opnieuw.</p>`;
+    btn.disabled = false;
+  }
+}
+
+function renderAIResult(r) {
+  const mh = (r.zoekcriteria.must_have||[]).map(c=>`<div class="criteria-item"><div class="criteria-type">Must have</div><div class="criteria-val">${c}</div></div>`).join('');
+  const nh = (r.zoekcriteria.nice_to_have||[]).map(c=>`<div class="criteria-item"><div class="criteria-type">Nice to have</div><div class="criteria-val">${c}</div></div>`).join('');
+  const ex = (r.zoekcriteria.uitsluitcriteria||[]).map(c=>`<div class="criteria-item exclude"><div class="criteria-type">Uitsluiten</div><div class="criteria-val">${c}</div></div>`).join('');
+  const scores = (r.scoremodel||[]).map(s=>`<div class="score-row"><span class="weight-pill ${wc(s.gewicht)}">${s.gewicht}</span><div><div class="score-factor">${s.factor}</div><div class="score-desc">${s.omschrijving}</div></div></div>`).join('');
+
+  document.getElementById('ai-output').innerHTML = `
+    <div style="margin-top:16px;">
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-header"><div class="card-title">Ideale kandidaat</div></div>
+        <div class="card-body"><p style="font-size:14px;color:var(--ink2);line-height:1.7;margin:0;">${r.samenvatting}</p></div>
+      </div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-header"><div class="card-title">Zoekcriteria</div></div>
+        <div class="card-body"><div class="criteria-grid">${mh}${nh}${ex}</div></div>
+      </div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-header"><div class="card-title">Boolean zoekopdrachten</div></div>
+        <div class="card-body">
+          <div style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.07em;font-family:'DM Mono',monospace;margin-bottom:6px;">LinkedIn</div>
+          <div class="result-box" id="bool-li">${r.boolean_linkedin}<button class="copy-btn" onclick="copy(document.getElementById('bool-li').innerText.replace('Gekopieerd!','').trim(),this)">Kopieer</button></div>
+          <div style="font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.07em;font-family:'DM Mono',monospace;margin:12px 0 6px;">Google X-Ray</div>
+          <div class="result-box" id="bool-go">${r.boolean_google}<button class="copy-btn" onclick="copy(document.getElementById('bool-go').innerText.replace('Gekopieerd!','').trim(),this)">Kopieer</button></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-header"><div class="card-title">Scoremodel</div></div>
+        <div class="card-body">${scores}</div>
+      </div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-header"><div class="card-title">Eerste bericht template</div></div>
+        <div class="card-body"><div class="result-box" id="msg-tpl" style="font-family:'DM Sans',sans-serif;line-height:1.75;">${r.eerste_bericht}<button class="copy-btn" onclick="copy(document.getElementById('msg-tpl').innerText.replace('Gekopieerd!','').trim(),this)">Kopieer</button></div></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary" onclick="document.getElementById('ai-output').innerHTML='';document.getElementById('ai-run-btn').disabled=false;['s1','s2','s3'].forEach((id,i)=>{document.getElementById(id).className='step'+(i===0?' active':'');})">Nieuwe zoekopdracht</button>
+        <button class="btn btn-primary" onclick="nav('pipeline')">Naar pijplijn →</button>
+      </div>
+    </div>`;
+}
+
+// ── CSV ───────────────────────────────────────────────────────────────────────
+let csvData = [], csvHeaders = [];
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+}
+
+function handleFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.split('\n').filter(l => l.trim());
+    csvHeaders = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
+    csvData = lines.slice(1).map(line => {
+      const vals = line.split(',').map(v => v.replace(/"/g,'').trim());
+      const obj = {};
+      csvHeaders.forEach((h, i) => obj[h] = vals[i] || '');
+      return obj;
+    }).filter(r => Object.values(r).some(v => v));
+    renderCSVPreview();
+  };
+  reader.readAsText(file);
+}
+
+function renderCSVPreview() {
+  if (!csvData.length) { document.getElementById('csv-preview').innerHTML = '<p style="color:var(--danger);font-size:13px;margin-top:12px;">Geen data gevonden.</p>'; return; }
+  const guess = kws => csvHeaders.find(h => kws.some(k => h.toLowerCase().includes(k))) || '';
+  const mn = guess(['name','naam','first'])||csvHeaders[0]||'';
+  const mf = guess(['title','functie','job','position'])||csvHeaders[1]||'';
+  const ml = guess(['location','locatie','city'])||'';
+  const ms = guess(['skill','expertise'])||'';
+  const mli = guess(['linkedin','url','link'])||'';
+
+  document.getElementById('csv-preview').innerHTML = `
+    <div class="card" style="margin-top:16px;">
+      <div class="card-header"><div class="card-title">${csvData.length} rijen gevonden — koppel kolommen</div></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+          ${[['Naam','cm-naam',mn],['Functietitel','cm-func',mf],['Locatie','cm-loc',ml],['Skills','cm-skills',ms],['LinkedIn URL','cm-li',mli]].map(([label,id,val])=>`
+            <div style="background:var(--beige);border-radius:var(--radius-sm);padding:10px 12px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;font-size:13px;gap:10px;">
+              <span style="color:var(--ink2);">${label}</span>
+              <select id="${id}" style="font-size:12px;border:1px solid var(--rule);border-radius:var(--radius-xs);padding:3px 6px;background:white;font-family:'DM Sans',sans-serif;">
+                <option value="">— overslaan —</option>
+                ${csvHeaders.map(h=>`<option value="${h}" ${h===val?'selected':''}>${h}</option>`).join('')}
+              </select>
+            </div>`).join('')}
+        </div>
+        <div style="overflow-x:auto;margin-bottom:16px;">
+          <table class="data-table">
+            <thead><tr>${csvHeaders.slice(0,5).map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+            <tbody>${csvData.slice(0,4).map(row=>`<tr>${csvHeaders.slice(0,5).map(h=>`<td>${row[h]||''}</td>`).join('')}</tr>`).join('')}</tbody>
+          </table>
+          ${csvData.length>4?`<p style="font-size:12px;color:var(--ink3);margin-top:8px;">... en nog ${csvData.length-4} rijen</p>`:''}
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost" onclick="document.getElementById('csv-preview').innerHTML=''">Annuleer</button>
+          <button class="btn btn-primary" onclick="importCSV()">Importeer ${csvData.length} kandidaten →</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function importCSV() {
+  const g = id => document.getElementById(id)?.value || '';
+  let added = 0;
+  csvData.forEach(row => {
+    const naam = (g('cm-naam') ? row[g('cm-naam')] : '').trim();
+    const functie = (g('cm-func') ? row[g('cm-func')] : '').trim();
+    if (!naam && !functie) return;
+    candidates.push({
+      id: nextId++, naam: naam||'Onbekend', functie: functie||'Onbekend',
+      locatie: (g('cm-loc') ? row[g('cm-loc')] : '').trim() || '—',
+      skills: (g('cm-skills') && row[g('cm-skills')]) ? row[g('cm-skills')].split(/[,;]/).map(s=>s.trim()).filter(Boolean) : [],
+      score: 'Middel', status: 'nieuw', datum: tod(),
+      notitie: 'Geïmporteerd via CSV',
+      linkedin: (g('cm-li') ? row[g('cm-li')] : '').trim() || '',
+      geschiedenis: [`${tod()} — Geïmporteerd via LinkedIn CSV`]
+    });
+    added++;
+  });
+  toast(`${added} kandidaten geïmporteerd`);
+  nav('pipeline');
+}
+
+// ── AI CHAT ───────────────────────────────────────────────────────────────────
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML += `<div class="ai-msg"><div class="ai-msg-user"><div class="ai-msg-bubble">${msg}</div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  const context = `Je bent een AI-assistent voor een recruitment platform. Hier zijn de huidige kandidaten: ${JSON.stringify(candidates.map(c=>({naam:c.naam,functie:c.functie,status:c.status,score:c.score,locatie:c.locatie})))}. Geef een kort, direct antwoord (max 2 zinnen) op de vraag van de recruiter.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-ipc': 'true' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 200, messages: [{ role: 'user', content: context + '\n\nVraag: ' + msg }] })
+    });
+    const data = await res.json();
+    const reply = data.content.map(b => b.text || '').join('');
+    msgs.innerHTML += `<div class="ai-msg"><div class="ai-msg-system"><div class="ai-avatar">AI</div><div class="ai-msg-bubble">${reply}</div></div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    msgs.innerHTML += `<div class="ai-msg"><div class="ai-msg-system"><div class="ai-avatar">AI</div><div class="ai-msg-bubble">Er ging iets mis. Probeer opnieuw.</div></div></div>`;
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+updateMetrics();
+updateFuncFilter();
+drawBoard();
+</script>
+</body>
+</html>
