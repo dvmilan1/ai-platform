@@ -1171,9 +1171,6 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ──
-const API_KEY = 'JOUW-API-KEY-HIER'; // <-- Vul hier je API key in
-
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const COLS = [
   { id:'nieuw',     label:'Nieuw',     color:'#2563eb' },
@@ -1482,10 +1479,10 @@ JSON formaat (exact):
 {"samenvatting":"1-2 zinnen ideale kandidaat","boolean_linkedin":"volledige LinkedIn Boolean","boolean_google":"Google X-Ray site:linkedin.com/in zoekopdracht","zoekcriteria":{"must_have":["item1","item2","item3"],"nice_to_have":["item1","item2"],"uitsluitcriteria":["item1","item2"]},"scoremodel":[{"factor":"naam","gewicht":"Hoog","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Hoog","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Middel","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Laag","omschrijving":"uitleg"}],"eerste_bericht":"LinkedIn InMail max 120 woorden, jij-vorm, [NAAM] placeholder, professioneel maar warm"}`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/.netlify/functions/claude', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-ipc': 'true' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
     });
     const data = await res.json();
     const raw = data.content.map(b => b.text || '').join('');
@@ -1638,10 +1635,10 @@ async function sendChat() {
   const context = `Je bent een AI-assistent voor een recruitment platform. Hier zijn de huidige kandidaten: ${JSON.stringify(candidates.map(c=>({naam:c.naam,functie:c.functie,status:c.status,score:c.score,locatie:c.locatie})))}. Geef een kort, direct antwoord (max 2 zinnen) op de vraag van de recruiter.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/.netlify/functions/claude', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-ipc': 'true' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 200, messages: [{ role: 'user', content: context + '\n\nVraag: ' + msg }] })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ max_tokens: 200, messages: [{ role: 'user', content: context + '\n\nVraag: ' + msg }] })
     });
     const data = await res.json();
     const reply = data.content.map(b => b.text || '').join('');
