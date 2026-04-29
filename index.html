@@ -745,6 +745,175 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--rule2); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--ink4); }
+
+  /* ── MOBILE RESPONSIVE ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    background: none;
+    border: none;
+    z-index: 60;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,33,64,0.5);
+    z-index: 45;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      z-index: 55;
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar-overlay.open {
+      display: block;
+    }
+    .main {
+      margin-left: 0 !important;
+    }
+    .hamburger {
+      display: flex;
+    }
+    .topbar {
+      padding: 0 16px;
+      gap: 10px;
+    }
+    .topbar-left {
+      flex: 1;
+      min-width: 0;
+    }
+    .topbar-title {
+      font-size: 14px;
+    }
+    .topbar-sub {
+      display: none;
+    }
+    .topbar-right .btn span {
+      display: none;
+    }
+    .page {
+      padding: 16px;
+    }
+    .metrics {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .metric-value {
+      font-size: 22px;
+    }
+    .board {
+      grid-template-columns: 1fr !important;
+      gap: 10px;
+    }
+    .col {
+      min-height: auto;
+    }
+    .dash-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .dash-grid-3 {
+      grid-template-columns: 1fr !important;
+    }
+    .ai-form-wrap {
+      max-width: 100%;
+    }
+    .field-row {
+      grid-template-columns: 1fr !important;
+    }
+    .criteria-grid {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    .ai-grid {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    .toolbar {
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .search-wrap {
+      max-width: 100% !important;
+      width: 100%;
+    }
+    .toolbar select {
+      flex: 1;
+      min-width: 0;
+    }
+    .data-table {
+      font-size: 12px;
+    }
+    .data-table th, .data-table td {
+      padding: 8px 8px;
+    }
+    .biz-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .modal {
+      max-width: 100%;
+      max-height: 92vh;
+      margin: 0;
+      border-radius: 16px 16px 0 0;
+    }
+    .modal-overlay {
+      align-items: flex-end;
+      padding: 0;
+    }
+    .int-row {
+      flex-wrap: wrap;
+    }
+    .int-desc {
+      font-size: 11px;
+    }
+    .funnel-label {
+      width: 70px;
+    }
+    .ai-suggestion {
+      flex-wrap: wrap;
+    }
+    .ai-suggestion > button {
+      width: 100%;
+    }
+    .steps {
+      flex-wrap: wrap;
+    }
+    .col-map {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .metrics {
+      grid-template-columns: 1fr 1fr !important;
+    }
+    .metric {
+      padding: 12px 14px;
+    }
+    .c-card {
+      padding: 10px;
+    }
+    .topbar-right .btn-sm {
+      padding: 5px 8px;
+      font-size: 11px;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -752,7 +921,14 @@ body {
 <div class="app">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  
+  <!-- Mobile hamburger -->
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-top">
       <div class="logo">
         <div class="logo-mark">AI</div>
@@ -824,6 +1000,7 @@ body {
 
     <!-- TOPBAR -->
     <div class="topbar" id="topbar">
+      <button class="hamburger" style="display:none;" id="hamburger-top" onclick="toggleSidebar()" aria-label="Menu"><span style="background:var(--ink)"></span><span style="background:var(--ink)"></span><span style="background:var(--ink)"></span></button>
       <div class="topbar-left">
         <div>
           <div class="topbar-title" id="topbar-title">Dashboard</div>
@@ -1246,6 +1423,13 @@ const PAGE_INFO = {
 };
 
 function nav(p) {
+  // Close mobile sidebar on navigation
+  if (window.innerWidth <= 768) {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  }
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   const navEl = document.getElementById('nav-' + p);
   if (navEl) navEl.classList.add('active');
