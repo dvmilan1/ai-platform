@@ -1869,5 +1869,72 @@ updateMetrics();
 updateFuncFilter();
 drawBoard();
 </script>
+</script>
+
+<script>
+// Supabase initialiseren
+const supabaseUrl = 'https://egghlnbqmkilxmrascjm.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnZ2hsbmJxbWtpbHhtcmFzY2ptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NDc1OTgsImV4cCI6MjA5MzMyMzU5OH0.muRBwNe9q1H56As-pAY9bGEpoF8VIWpOqlMo6eTIDuw';
+const { createClient } = supabase;
+const db = createClient(supabaseUrl, supabaseKey);
+
+async function checkSession() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) {
+    showPlatform();
+  } else {
+    showLogin();
+  }
+}
+
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'block';
+  document.getElementById('platform').style.display = 'none';
+}
+
+function showPlatform() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('platform').style.display = 'block';
+}
+
+async function handleLogin() {
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const btn = document.getElementById('login-btn');
+  const errorDiv = document.getElementById('login-error');
+
+  if (!email || !password) {
+    errorDiv.style.display = 'block';
+    errorDiv.textContent = 'Vul je e-mailadres en wachtwoord in.';
+    return;
+  }
+
+  btn.textContent = 'Bezig...';
+  btn.disabled = true;
+  errorDiv.style.display = 'none';
+
+  const { data, error } = await db.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    errorDiv.style.display = 'block';
+    errorDiv.textContent = 'Inloggen mislukt. Controleer je gegevens.';
+    btn.textContent = 'Inloggen';
+    btn.disabled = false;
+    return;
+  }
+
+  showPlatform();
+}
+
+async function handleLogout() {
+  await db.auth.signOut();
+  showLogin();
+}
+
+checkSession();
+</script>
+
+</body>
+</html>  
 </body>
 </html>
