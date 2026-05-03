@@ -1873,10 +1873,15 @@ drawBoard();
 
 <script>
 // Supabase initialiseren
-const supabaseUrl = 'https://egghlnbqmkilxmrascjm.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnZ2hsbmJxbWtpbHhtcmFzY2ptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NDc1OTgsImV4cCI6MjA5MzMyMzU5OH0.muRBwNe9q1H56As-pAY9bGEpoF8VIWpOqlMo6eTIDuw';
 const { createClient } = supabase;
-const db = createClient(supabaseUrl, supabaseKey);
+let db;
+
+async function initSupabase() {
+  const res = await fetch('/.netlify/functions/config');
+  const config = await res.json();
+  db = createClient(config.supabaseUrl, config.supabaseKey);
+  checkSession();
+}
 
 async function checkSession() {
   const { data: { session } } = await db.auth.getSession();
@@ -1931,7 +1936,7 @@ async function handleLogout() {
   showLogin();
 }
 
-checkSession();
+initSupabase();
 </script>
 
 </body>
