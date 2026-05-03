@@ -1694,7 +1694,8 @@ JSON formaat (exact):
 {"samenvatting":"1-2 zinnen ideale kandidaat","boolean_linkedin":"volledige LinkedIn Boolean","boolean_google":"Google X-Ray site:linkedin.com/in zoekopdracht","zoekcriteria":{"must_have":["item1","item2","item3"],"nice_to_have":["item1","item2"],"uitsluitcriteria":["item1","item2"]},"scoremodel":[{"factor":"naam","gewicht":"Hoog","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Hoog","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Middel","omschrijving":"uitleg"},{"factor":"naam","gewicht":"Laag","omschrijving":"uitleg"}],"eerste_bericht":"LinkedIn InMail max 120 woorden, jij-vorm, [NAAM] placeholder, professioneel maar warm"}`;
 
   try {
-/api/claude      method: 'POST',
+/api/claude      
+  method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
     });
