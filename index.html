@@ -1877,7 +1877,7 @@ const { createClient } = supabase;
 let db;
 
 async function initSupabase() {
-/api/config
+const res = await fetch('/api/config');
   const config = await res.json();
   db = createClient(config.supabaseUrl, config.supabaseKey);
   checkSession();
