@@ -1850,7 +1850,7 @@ async function sendChat() {
   const context = `Je bent een AI-assistent voor een recruitment platform. Hier zijn de huidige kandidaten: ${JSON.stringify(candidates.map(c=>({naam:c.naam,functie:c.functie,status:c.status,score:c.score,locatie:c.locatie})))}. Geef een kort, direct antwoord (max 2 zinnen) op de vraag van de recruiter.`;
 
   try {
-/api/claude
+const response = await fetch('/api/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ max_tokens: 200, messages: [{ role: 'user', content: context + '\n\nVraag: ' + msg }] })
