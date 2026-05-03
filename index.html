@@ -919,6 +919,36 @@ body {
 </head>
 <body>
 
+<!-- LOGINSCHERM -->
+<div id="login-screen" style="display:none;">
+  <div style="min-height:100vh;background:#0f2140;display:flex;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:white;border-radius:16px;padding:48px;width:100%;max-width:420px;">
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:#0f2140;margin-bottom:8px;">AI Platform</div>
+        <div style="font-size:14px;color:#7a90b0;">Log in om verder te gaan</div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:12px;font-weight:500;color:#3d5278;display:block;margin-bottom:6px;">E-mailadres</label>
+        <input id="login-email" type="email" placeholder="jouw@email.nl" style="width:100%;padding:12px 16px;border:1px solid #e5ddd0;border-radius:8px;font-size:14px;outline:none;font-family:'DM Sans',sans-serif;">
+      </div>
+      <div style="margin-bottom:24px;">
+        <label style="font-size:12px;font-weight:500;color:#3d5278;display:block;margin-bottom:6px;">Wachtwoord</label>
+        <input id="login-password" type="password" placeholder="••••••••" style="width:100%;padding:12px 16px;border:1px solid #e5ddd0;border-radius:8px;font-size:14px;outline:none;font-family:'DM Sans',sans-serif;">
+      </div>
+      <div id="login-error" style="display:none;background:#fee2e2;color:#dc2626;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;"></div>
+      <button onclick="handleLogin()" id="login-btn" style="width:100%;padding:14px;background:#2563eb;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Syne',sans-serif;">
+        Inloggen
+      </button>
+      <div style="text-align:center;margin-top:16px;font-size:12px;color:#b0bfcf;">
+        AVG-compliant · EU dataopslag · Versleuteld
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORM -->
+<div id="platform" style="display:none;">
+
 <div class="app">
 
   <!-- SIDEBAR -->
