@@ -1876,7 +1876,7 @@ const { createClient } = supabase;
 let db;
 
 async function initSupabase() {
-  const res = await fetch('/.netlify/functions/config');
+/api/config
   const config = await res.json();
   db = createClient(config.supabaseUrl, config.supabaseKey);
   checkSession();
