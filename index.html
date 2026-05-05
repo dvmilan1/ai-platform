@@ -323,7 +323,7 @@ body {
 .metric.blue::before { background: var(--blue); }
 .metric.navy::before { background: var(--navy); }
 .metric.success::before { background: var(--success); }
-.metric.warning::before { background: var(--warning); }
+.metric.warning::before { background: var(--green-mid, #32946d); }
 
 .metric-label { font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.07em; font-family: 'DM Mono', monospace; margin-bottom: 8px; }
 .metric-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 600; color: var(--ink); letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
@@ -962,10 +962,10 @@ body {
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-top">
       <div class="logo">
-        <div class="logo-mark">AI</div>
-        <div class="logo-text">Platform</div>
+        
+        <img src="/assets/logo-meridavo.png" alt="Meridavo" style="height:40px;width:auto;object-fit:contain;">
       </div>
-      <div class="logo-sub">AI Implementatie</div>
+      
     </div>
 
     <nav class="nav">
@@ -1066,7 +1066,7 @@ body {
           <div class="metric-value" id="m-gesprek">2</div>
           <div class="metric-sub">Screening + interview</div>
         </div>
-        <div class="metric warning">
+        <div class="metric success">
           <div class="metric-label">Hoge match</div>
           <div class="metric-value" id="m-hoog">3</div>
           <div class="metric-sub">Score A kandidaten</div>
@@ -1158,7 +1158,7 @@ body {
         <div class="metric blue"><div class="metric-label">Totaal</div><div class="metric-value" id="pm-total">5</div></div>
         <div class="metric navy"><div class="metric-label">Benaderd</div><div class="metric-value" id="pm-benaderd">4</div></div>
         <div class="metric success"><div class="metric-label">In gesprek</div><div class="metric-value" id="pm-gesprek">2</div></div>
-        <div class="metric warning"><div class="metric-label">Hoge match</div><div class="metric-value" id="pm-hoog">3</div></div>
+        <div class="metric success"><div class="metric-label">Hoge match</div><div class="metric-value" id="pm-hoog">3</div></div>
       </div>
       <div class="toolbar">
         <div class="search-wrap">
