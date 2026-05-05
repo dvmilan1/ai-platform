@@ -1,4 +1,4 @@
-[STATUS (1).md](https://github.com/user-attachments/files/27412424/STATUS.1.md)
+[STATUS (2).md](https://github.com/user-attachments/files/27414203/STATUS.2.md)
 # Meridavo — STATUS.md
 > **Dit is de enige bron van waarheid.**
 > Begin elke Claude-sessie met: kopieer dit bestand → plak in de chat.
@@ -162,6 +162,56 @@ Geen tool-probleem maar een workflow-probleem. AI zegt wat je moet doen, waarom 
 - [ ] AI vacature-coach (optioneel op verzoek)
 - [ ] Scorecards per fase (optioneel)
 - [ ] Quality-of-hire tracker (optioneel)
+
+### Basis klaar ✅
+- Vacature aanmaken (titel, opdrachtgever, locatie, status, omschrijving)
+- Data opgeslagen in Supabase
+- Lijst met vacatures — live data
+- Verwijderen werkt
+
+### Nog te bouwen
+- [ ] Kandidaat koppelen aan vacature
+- [ ] ROI bijhouden — kosten en opbrengst per vacature
+- [ ] AI teksthulp bij aanmaken vacature
+- [ ] Vacature detail pagina — bewerken, niet alleen verwijderen
+- [ ] Vacature widget (3 varianten: code, API, feed)
+- [ ] Google Jobs integratie (JSON-LD automatisch)
+- [ ] Wet DBA checker (risicoscore groen/oranje/rood)
+- [ ] AI vacature-coach (optioneel op verzoek)
+- [ ] Externe vacatures monitoren — marktoverzicht per functie
+- [ ] AI signalering: "Jouw salaris ligt X% onder markt"
+
+---
+
+## Verbindingslaag — hoe alles samenhangt
+
+Dit is wat Meridavo uniek maakt. Geen losse tools — één systeem waar alles aan elkaar gekoppeld is:
+
+```
+Organisatie → Team → Capaciteitstekort → Vacature ontstaat
+Vacature → Kanalen → Kandidaten → Pijplijn → Aanstelling
+Aanstelling → Team groeit → Kosten zichtbaar → ROI berekend
+Markt → AI monitort → Signaleert → Daily Briefing → Actie
+```
+
+Elke module weet van de andere. Geen data-eilanden.
+
+---
+
+## Organisatiemodule — nieuwe module (toe te voegen)
+
+**Wat het doet:**
+Overzicht van de hele organisatie — mensen, afdelingen, rollen, capaciteit. Gekoppeld aan recruitment zodat een vacature altijd een reden heeft en een aangestelde kandidaat direct teamlid wordt.
+
+### Te bouwen
+- [ ] Teamoverzicht — wie werkt er, welke afdeling, welke rol
+- [ ] Afdelingsbeheer — structuur van de organisatie
+- [ ] Capaciteitsplanning — hoeveel mensen per afdeling, wat is de behoefte
+- [ ] Koppeling aan vacatures — vacature ontstaat vanuit teamtekort
+- [ ] Koppeling aan kandidaten — aangestelde kandidaat wordt teamlid
+- [ ] Medewerker tijdlijn — wanneer in dienst, groei, rolomschrijving
+- [ ] Salarisrange per functie (CBS data)
+- [ ] AI signalering capaciteitstekort
 
 ---
 
