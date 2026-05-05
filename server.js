@@ -17,6 +17,11 @@ app.use('/api/talentpool', talentpoolRoutes);
 // Statische bestanden
 app.use(express.static(path.join(__dirname)));
 
+// Admin panel route
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
 // Config endpoint — publiek
 app.get('/api/config', (req, res) => {
   res.json({
