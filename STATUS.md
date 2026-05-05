@@ -1,3 +1,4 @@
+[STATUS (1).md](https://github.com/user-attachments/files/27412424/STATUS.1.md)
 # Meridavo — STATUS.md
 > **Dit is de enige bron van waarheid.**
 > Begin elke Claude-sessie met: kopieer dit bestand → plak in de chat.
@@ -7,9 +8,9 @@
 ---
 
 ## Laatste update
-**Datum:** Mei 2026
-**Huidige sprint:** Sprint 1 afronden — vanavond
-**Volgende sprint:** Sprint 2 — Marketingwebsite
+**Datum:** 5 Mei 2026
+**Huidige sprint:** Sprint 4 — Vacaturesysteem + AI tools
+**Vorige sprint:** Sprint 3a — Beheerderspanel afgerond ✅
 
 ---
 
@@ -70,7 +71,7 @@ Geen tool-probleem maar een workflow-probleem. AI zegt wat je moet doen, waarom 
 ---
 
 ## Sprint 1 - Fundament
-**Status: Gedeeltelijk klaar - vanavond afronden**
+**Status: Afgerond ✅**
 
 ### Klaar
 - Supabase gekoppeld
@@ -79,19 +80,33 @@ Geen tool-probleem maar een workflow-probleem. AI zegt wat je moet doen, waarom 
 - Inlogsysteem werkt
 - Server / domein / SSL / PM2
 - CORS / rate limiting / max 5 inlogpogingen
+- RBAC middleware (Eigenaar, Manager, Medewerker, Gast)
+- Actie-log middleware (6 maanden bewaren)
+- Auto-uitloggen na 30 min inactiviteit
+- Wachtwoord vergeten functie
+- AVG talentpool opt-in systeem
 
-### Vanavond bouwen
-- [ ] RBAC rollen in code (Eigenaar, Manager, Medewerker, Gast)
-- [ ] Actie-log middleware (6 maanden bewaren)
-- [ ] Auto-uitloggen na 30 min inactiviteit
-- [ ] Wachtwoord vergeten functie
-- [ ] Data migreren en RLS testen
-- [ ] AVG talentpool opt-in systeem
+### Projectstructuur op server
+- `/var/www/mardive/server.js` — hoofdserver
+- `/var/www/mardive/index.html` — klantdashboard
+- `/var/www/mardive/admin.html` — beheerderspanel
+- `/var/www/mardive/assets/logo-meridavo.png` — logo
+- `/var/www/mardive/middleware/auth.js` — RBAC
+- `/var/www/mardive/middleware/actielog.js` — actie-log
+- `/var/www/mardive/middleware/inactiviteit.js` — auto-uitloggen
+- `/var/www/mardive/routes/auth.js` — wachtwoord vergeten
+- `/var/www/mardive/routes/talentpool.js` — AVG opt-in
+
+### Openstaand
+- GitHub authenticatie instellen (credential helper)
+- Data migreren en RLS testen met echte data
 
 ---
 
 ## Sprint 2 - Marketingwebsite
-**Status: Nog niet begonnen**
+**Status: Gestart 🔄**
+
+### Te bouwen
 - [ ] Homepagina hero met openingsvraag
 - [ ] Probleemblok 3 doelgroepen
 - [ ] Prijzenpagina configureerbaar
@@ -102,32 +117,51 @@ Geen tool-probleem maar een workflow-probleem. AI zegt wat je moet doen, waarom 
 
 ---
 
-## Sprint 3 - Beheerderspanel + Mollie + Partner
-**Status: Nog niet begonnen**
-- [ ] Admin dashboard
-- [ ] Klantenbeheer en gebruikersbeheer
-- [ ] Personalisatie per klant
-- [ ] Churn signalering 14 dagen
-- [ ] Mollie iDEAL + SEPA
-- [ ] Abonnementenbeheer configureerbaar
-- [ ] Facturen PDF
-- [ ] Partnerprogramma
-- [ ] 2FA eigenaar OWASP A07
-- [ ] Logging mislukte pogingen OWASP A09
+## Sprint 3a — Beheerderspanel
+**Status: Basis afgerond ✅ — uitbreiding later**
 
----
+### Klaar
+- Admin dashboard (statistieken: klanten, trials, gebruikers)
+- Klanten overzicht
+- Gebruikers overzicht
+- Pakketten configureren (Starter €49, Groei €99, Business €249)
+- Platforminstellingen (churn, partner vergoeding, auto-uitloggen)
+- Modules aan/uit (AI Zoekopdracht, Pijplijn, CSV, Vacatures, Daily Briefing, Wet DBA)
+- Beheerderspanel live op meridavo.com/admin
+- RLS policies correct ingesteld voor users tabel
+- GRANT SELECT voor authenticated gebruikers
 
-## Sprint 4 - Vacaturesysteem + AI tools
-**Status: Nog niet begonnen**
-- [ ] Vacature aanmaken met AI
-- [ ] ROI dashboard
-- [ ] Vacature widget 3 varianten
-- [ ] Google Jobs JSON-LD automatisch
+### Locatie
+- `/var/www/mardive/admin.html`
+
+### Nog uit te breiden (Sprint 3b — vlak voor lancering)
+- Klant toevoegen formulier volledig werkend
+- Klant activeren, blokkeren, verwijderen
+- Impersonation voor support
+- Churn signalering actief
+- Personalisatie per klant (logo, kleur, AI tone of voice)
+- Pakketten opslaan naar database (nu localStorage)
+- Mollie betalingen
+- Partnerprogramma
+- 2FA eigenaar
+
+## Sprint 3 — Marketingwebsite
+**Status: Uitgesteld — wordt als laatste gebouwd voor lancering**
+
+## Sprint 4 — Vacaturesysteem + AI tools
+**Status: Gestart 🔄**
+
+### Te bouwen
+- [ ] Vacature aanmaken met AI teksthulp
+- [ ] ROI dashboard (kosten, opbrengst, kanaalanalyse)
+- [ ] Branche benchmark toggle
+- [ ] Vacature widget (3 varianten: code, API, feed)
+- [ ] Google Jobs integratie (JSON-LD automatisch)
 - [ ] Carrièrepagina-builder
-- [ ] Wet DBA checker
-- [ ] AI vacature-coach optioneel
-- [ ] Scorecards optioneel
-- [ ] Quality-of-hire tracker optioneel
+- [ ] Wet DBA checker (risicoscore groen/oranje/rood)
+- [ ] AI vacature-coach (optioneel op verzoek)
+- [ ] Scorecards per fase (optioneel)
+- [ ] Quality-of-hire tracker (optioneel)
 
 ---
 
